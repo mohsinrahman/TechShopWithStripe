@@ -8,12 +8,13 @@ app.use('/api', express.json())
 
 app.use(express.static('public'))
 
-app.get('/v1/products', async (req, res) => {
+app.get('/api/products', async (req, res) => {
 
     const products = await stripe.products.list({
-    limit: 3,
+        limit: 3,
     });
     console.log(products)
+    res.json(products)
 });
 
 app.listen(3000, () => console.log('Server is running on port 3000'))
