@@ -1,0 +1,88 @@
+html{
+    min-height:100%;/* make sure it is at least as tall as the viewport */
+    position:relative;
+}
+body{
+    height:100%; /* force the BODY element to match the height of the HTML element */
+}
+
+#cartDiv {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+#divForProducts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 70%;
+    height: 100%;
+    position:absolute;
+    top:0;
+    bottom:0;
+    right:0;
+    overflow:hidden;
+    z-index:-1; /* Remove this line if it's not going to be a background! */
+}
+
+#divForCheckout {
+    background-color: rgb(231, 231, 231);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 30%;
+    height: 100%;
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    overflow:hidden;
+}
+
+.checkoutButton {
+    background-color: rgb(46, 46, 46);
+    border: none;
+    color: white;
+    padding: 10px 52px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    border-radius: 12px;
+    width: 200px;
+    margin: 5px;
+}
+
+.checkoutButton:hover {
+    cursor: pointer;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19)
+}
+
+.fa-shopping-cart {
+    color: rgb(46, 46, 46);
+}
+
+.fa-stripe {
+    font-size: 30px;
+    color: rgb(46, 46, 46);
+}
+
+h1, h2 {
+    font-family: 'Source Code Pro', monospace;
+    color: rgb(46, 46, 46);
+}
+
+h2 {
+    text-decoration: underline;
+}
+
+#copyright {
+    bottom: 0;
+    position:absolute;
+    font-style: italic;
+    font-size: 12px;
+}

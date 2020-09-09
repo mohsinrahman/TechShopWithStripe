@@ -2,16 +2,32 @@ let stripe;
 window.addEventListener("load", main);
 
 function main() {
+
+    const toCheckout = document.getElementById('toCheckout')
+    toCheckout.addEventListener('click', proceedToCheckout)
+
   stripe = Stripe(
     "pk_test_51HMqSzB979vlbHgipDCCEbRksJjH513MddC8fw21FjfEy8DuJXosMnVFVTIZugCBKPgVwoy59rqRfmr2lrn0G8I100oKXpFnx8"
   );
   products();
 }
 
+async function proceedToCheckout() {
+    try {
+        const response = await fetch('/api/checkout-session', { method: 'POST'})
+        const session = await response.json()
+
+        // Proceed to open the checkout page
+        const result = await stripe.redirectToCheckout({ sessionId: session.id});
+
+    } catch (error) {
+       
+    }
+}
+
 async function products() {
   let ul = document.getElementById("products");
 
-  console.log("rtyui");
   const response = await fetch("/api/products", {
     method: "GET"
   });
@@ -59,4 +75,9 @@ async function products() {
   if (response.status > 400) {
     console.log(productList.error);
   }
+}
+
+// function for returning to homepage from cartpage
+function backToHomepage() {
+    window.location = "index.html"
 }
