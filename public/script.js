@@ -2,9 +2,9 @@ let stripe;
 window.addEventListener("load", main);
 
 function main() {
-
+/* 
     const toCheckout = document.getElementById('toCheckout')
-    toCheckout.addEventListener('click', proceedToCheckout)
+    toCheckout.addEventListener('click', proceedToCheckout) */
 
   stripe = Stripe(
     "pk_test_51HMqSzB979vlbHgipDCCEbRksJjH513MddC8fw21FjfEy8DuJXosMnVFVTIZugCBKPgVwoy59rqRfmr2lrn0G8I100oKXpFnx8"
@@ -12,7 +12,7 @@ function main() {
   products();
 }
 
-async function proceedToCheckout() {
+/* async function proceedToCheckout() {
     try {
         const response = await fetch('/api/checkout-session', { method: 'POST'})
         const session = await response.json()
@@ -23,7 +23,7 @@ async function proceedToCheckout() {
     } catch (error) {
        
     }
-}
+} */
 
 async function products() {
   let ul = document.getElementById("products");
