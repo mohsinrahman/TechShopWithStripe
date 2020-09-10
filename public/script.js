@@ -65,9 +65,17 @@ async function products() {
     let productToAdd = name;
     for (let i = 0; i < productList.data.length; i++) {
       if (productToAdd == productList.data[i].name) {
+        console.log(productList.data[i]);
         cartArray.push(productList.data[i]);
+        localStorage.setItem(
+          productList.data[i].name,
+         JSON.stringify(
+          productList.data[i]
+         ) 
+        )
       }
     }
+
 
     console.log(cartArray);
   }
@@ -75,6 +83,20 @@ async function products() {
   if (response.status > 400) {
     console.log(productList.error);
   }
+}
+
+function shopBasket() {
+
+  var values = [],
+      keys = Object.keys(localStorage),
+      i = keys.length;
+  
+  while ( i-- ) {
+      values.push( localStorage.getItem(keys[i]) );
+      console.log(localStorage.getItem(keys[i]));
+  }
+console.log(values);
+  return values;
 }
 
 // function for returning to homepage from cartpage

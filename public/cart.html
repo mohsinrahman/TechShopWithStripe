@@ -1,31 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> ☏  TechShop</title>
+    <title> ☏ TechShop</title>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="./script.js"></script>
     <script src="https://kit.fontawesome.com/e8127072bf.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./style.css">
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
+
 </head>
-<body>
+
+<body onload="shopBasket()">
     <div id="cartDiv">
         <div id="divForProducts">
             <h1>Cart <i class="fas fa-shopping-cart"></i></h1>
             <ul id="productsInCart">All the products added to cart will be displayed here</ul>
+
+            <div id="divForCheckout">
+                <h2>TechShop</h2>
+                <p id="totalPrice">Here will the total price be</p>
+                <button id="toCheckout" class="checkoutButton">To checkout <i class="fas fa-chevron-right"></i></button>
+                <button onclick="backToHomepage()" class="checkoutButton"><i class="fas fa-chevron-left"></i>
+                    Back</button>
+                <i class="fab fa-stripe"></i>
+                <p id="copyright">
+                    Copyright by Group 1 ©
+                </p>
+            </div>
         </div>
-        <div id="divForCheckout">
-            <h2>TechShop</h2>
-            <p id="totalPrice">Here will the total price be</p>
-            <button id="toCheckout" class="checkoutButton">To checkout <i class="fas fa-chevron-right"></i></button>
-            <button onclick="backToHomepage()" class="checkoutButton"><i class="fas fa-chevron-left"></i> Back</button>
-            <i class="fab fa-stripe"></i>
-            <p id="copyright">
-                Copyright by Group 1 ©
-            </p>
-        </div>
+
     </div>
 </body>
+
 </html>
