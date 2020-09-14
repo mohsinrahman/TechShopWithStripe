@@ -85,6 +85,7 @@ h2 {
     position:absolute;
     font-style: italic;
     font-size: 12px;
+    margin-left: 10px;
 }
 .cart{
     position: relative;
@@ -108,4 +109,13 @@ h2 {
 table img{
     height: 40px;
     width: auto;
+}
+
+a {
+ text-decoration: none;
+}
+
+.headerCartPage {
+    font-size: 25px;
+    color: black;
 }
