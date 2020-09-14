@@ -1,13 +1,12 @@
 let stripe;
 window.addEventListener("load", main);
-
 function main() {
-  /* 
+  /*
       const toCheckout = document.getElementById('toCheckout')
       toCheckout.addEventListener('click', proceedToCheckout) */
 
   stripe = Stripe(
-    "pk_test_51HMqSzB979vlbHgipDCCEbRksJjH513MddC8fw21FjfEy8DuJXosMnVFVTIZugCBKPgVwoy59rqRfmr2lrn0G8I100oKXpFnx8"
+      "pk_test_51HMqSzB979vlbHgipDCCEbRksJjH513MddC8fw21FjfEy8DuJXosMnVFVTIZugCBKPgVwoy59rqRfmr2lrn0G8I100oKXpFnx8"
   );
   products();
 }
@@ -16,12 +15,10 @@ function main() {
     try {
         const response = await fetch('/api/checkout-session', { method: 'POST'})
         const session = await response.json()
-
         // Proceed to open the checkout page
         const result = await stripe.redirectToCheckout({ sessionId: session.id});
-
     } catch (error) {
-       
+
     }
 } */
 
@@ -86,17 +83,24 @@ async function products() {
       if (productToAdd == productList.data[i].name) {
         console.log(productList.data[i]);
         cartArray.push(productList.data[i]);
-        localStorage.setItem(
-          productList.data[i].name,
-          JSON.stringify(
-            productList.data[i]
-          )
-        )
+        console.log('clear',localStorage.length)
+
       }
     }
 
 
     console.log(cartArray);
+    cartArray.map((value,key)=>{
+      localStorage.setItem(
+          key,
+          JSON.stringify(
+              value
+          )
+      )
+    })
+    var itemCount =document.getElementById('itemCount');
+    if(cartArray.length == 1) itemCount.style.opacity = 1
+    itemCount.innerText = cartArray.length
   }
 
   if (response.status > 400) {
@@ -105,17 +109,35 @@ async function products() {
 }
 
 function shopBasket() {
+  var list = document.getElementById('productList')
+  var table = document.createElement('table')
 
-  var values = [],
-    keys = Object.keys(localStorage),
-    i = keys.length;
-
-  while (i--) {
-    values.push(localStorage.getItem(keys[i]));
-    console.log(localStorage.getItem(keys[i]));
+  var tr = document.createElement('tr')
+  tr.innerHTML = '<th>Image</th><th>Name</th><th>Price</th>'
+  table.appendChild(tr)
+  for(var i=0;i<=localStorage.length;i++){
+       var tr = document.createElement('tr')
+       tr.innerHTML = '<td><img src="'+JSON.parse(localStorage.getItem(i)).images[0]+'" width="auto" height="40"></td><td>'+JSON.parse(localStorage.getItem(i)).name+'</td><td>99$</td>'
+       table.appendChild(tr)
+      console.log(i,table)
+    if(localStorage.length-1 == i){
+      console.log('test',table)
+      list.appendChild(table)
+    }
   }
-  console.log(values);
-  return values;
+
+
+
+  // var values = [],
+  //     keys = Object.keys(localStorage),
+  //     i = keys.length;
+  //   console.log()
+  // while (i--) {
+  //   values.push(localStorage.getItem(keys[i]));
+  //   console.log(localStorage.getItem(keys[i]));
+  // }
+  // console.log(values);
+  // return values;
 }
 
 // function for returning to homepage from cartpage
