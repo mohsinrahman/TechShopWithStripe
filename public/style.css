@@ -86,3 +86,8 @@ h2 {
     font-style: italic;
     font-size: 12px;
 }
+.cart{
+    position: relative;
+    margin-right: 16px;
+}
+
