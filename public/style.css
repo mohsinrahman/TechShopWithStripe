@@ -90,4 +90,22 @@ h2 {
     position: relative;
     margin-right: 16px;
 }
-
+.cart #itemCount{
+    opacity: 0;
+    transition:opacity ease-in 0.3s;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    position: absolute;
+    background: red;
+    color: white;
+    font-size: 14px;
+    padding-left: 8px;
+    padding-top: 2px;
+    top: -16px;
+    left: 15px;
+}
+table img{
+    height: 40px;
+    width: auto;
+}
