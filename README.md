@@ -1,2 +1,3 @@
 # TechShopWithStripe
-An E-shopping app with Stripe Integration
+
+### An E-shopping app with Stripe Integration

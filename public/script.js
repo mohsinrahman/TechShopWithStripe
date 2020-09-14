@@ -7,11 +7,11 @@ function main() {
   );
   products();
 }
-
+console.log("div1");
 async function products() {
-  let ul = document.getElementById("products");
+  let div1 = document.getElementById("products");
 
-  console.log("rtyui");
+  console.log("div1");
   const response = await fetch("/api/products", {
     method: "GET"
   });
@@ -22,7 +22,47 @@ async function products() {
     const product = productList.data[i];
     let id = product.id;
     console.log(id);
-    let li = document.createElement("li");
+    let div2 = document.createElement("div");
+    div2.className = "col-md-4";
+    div1.appendChild(div2);
+    let div3 = document.createElement("div");
+    div3.className = "card mb-4 shadow-sm ";
+    div2.appendChild(div3);
+    let divImg = document.createElement("div");
+    divImg.className = "text-center";
+    let img = document.createElement("img");
+    img.className = "img-fluid phone text-center";
+    img.src = product.images;
+    img.setAttribute("height", "200px");
+    img.setAttribute("width", "150px");
+    img.setAttribute("alt", "Responsive image");
+    divImg.appendChild(img);
+    div3.appendChild(divImg);
+
+
+    let div4 = document.createElement("div");
+    div4.className = "card-body";
+    div3.appendChild(div4);
+    let p = document.createElement("p");
+    p.className = "card-text";
+    p.innerText = "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.";
+    div4.appendChild(p);
+    let div5 = document.createElement("div");
+    div5.className = "d-flex justify-content-between align-items-center";
+    div4.appendChild(div5);
+    let div6 = document.createElement("div");
+    div6.className = "btn-group";
+    div5.appendChild(div6);
+    let btn = document.createElement("button");
+    btn.className = "btn btn-sm btn-outline-secondary";
+    btn.setAttribute("type", "button");
+    btn.innerText = "Köp";
+    btn.onclick = function () {
+      addProductCart(product.name);
+    };
+    div6.appendChild(btn);
+
+    /* let li = document.createElement("li");
     li.className = "listPhone";
     let img = document.createElement("img");
     img.src = product.images;
@@ -39,10 +79,10 @@ async function products() {
     AddtoCart.className = " finishShoping";
     AddtoCart.setAttribute("type", "button");
     AddtoCart.innerText = "Add to Cart";
-    AddtoCart.onclick = function() {
+    AddtoCart.onclick = function () {
       addProductCart(product.name);
     };
-    li.appendChild(AddtoCart);
+    li.appendChild(AddtoCart); */
   }
 
   function addProductCart(name) {
