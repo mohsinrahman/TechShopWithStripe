@@ -42,11 +42,7 @@ app.post('/api/checkout-session', async (req, res) => {
 app.get('/api/products', async (req, res) => {
 
     const products = await stripe.products.list({
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> 057e9523022598dec46d85a317462acc1cf2dfdb
     });
     console.log(products)
     res.json(products)
