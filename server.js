@@ -40,7 +40,7 @@ app.post('/api/checkout-session', async (req, res) => {
 app.get('/api/products', async (req, res) => {
 
     const products = await stripe.products.list({
-        limit: 3,
+        
     });
     console.log(products)
     res.json(products)
