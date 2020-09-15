@@ -2,17 +2,17 @@ let stripe;
 window.addEventListener("load", main);
 
 function main() {
-  
+  /*
+      const toCheckout = document.getElementById('toCheckout')
+      toCheckout.addEventListener('click', proceedToCheckout) */
+
   stripe = Stripe(
     "pk_test_51HMqSzB979vlbHgipDCCEbRksJjH513MddC8fw21FjfEy8DuJXosMnVFVTIZugCBKPgVwoy59rqRfmr2lrn0G8I100oKXpFnx8"
-    );
-    products();
-    
-        const toCheckout = document.getElementById('toCheckout')
-        toCheckout.addEventListener('click', proceedToCheckout)
+  );
+  products();
 }
 
-async function proceedToCheckout() {
+/* async function proceedToCheckout() {
     try {
         const response = await fetch('/api/checkout-session', { method: 'POST'})
         const session = await response.json()
@@ -21,7 +21,7 @@ async function proceedToCheckout() {
     } catch (error) {
 
     }
-}
+} */
 
 async function products() {
   let div1 = document.getElementById("products");
@@ -31,8 +31,10 @@ async function products() {
   const productList = await response.json();
   let cartArray = [];
   for (let i = 0; i < productList.data.length; i++) {
+    console.log(productList);
     const product = productList.data[i];
     let id = product.id;
+    console.log(id);
     let div2 = document.createElement("div");
     div2.className = "col-md-4";
     div1.appendChild(div2);
@@ -48,7 +50,7 @@ async function products() {
     img.setAttribute("width", "150px");
     img.setAttribute("alt", "Responsive image");
     divImg.appendChild(img);
-    
+
     let productName = document.createElement("p")
     productName.innerText = product.name
     productName.classList = "productName"
@@ -84,21 +86,33 @@ async function products() {
   function addProductCart(name) {
     let productToAdd = name;
     for (let i = 0; i < productList.data.length; i++) {
+      let push = true
       if (productToAdd == productList.data[i].name) {
-        console.log(productList.data[i]);
-        cartArray.push(productList.data[i]);
-        console.log('clear', localStorage.length)
+        if(cartArray.length > 0){
+          cartArray.map((value,key)=>{
+            if(value.name == productList.data[i].name)
+            {
+              let object = productList.data[i]
+               object.count ?  object['count'] = object.count + 1 :  object['count'] = 2
+              push = false;
+            }
+            // if(cartArray.length == key){
+            // }
+          })
+          if(push)
+            cartArray.push(productList.data[i]);
+        }
+        else
+          cartArray.push(productList.data[i]);
 
       }
     }
-
-
-    console.log(cartArray);
+    console.log('amir',cartArray);
     cartArray.map((value, key) => {
       localStorage.setItem(
         key,
         JSON.stringify(
-          value
+            value
         )
       )
     })
@@ -115,33 +129,58 @@ async function products() {
 function shopBasket() {
   var list = document.getElementById('productList')
   var table = document.createElement('table')
-
+  table.id = 'shop-basket-table'
   var tr = document.createElement('tr')
-  tr.innerHTML = '<th>Image</th><th>Name</th><th>Price</th>'
-  table.appendChild(tr)
-  for (var i = 0; i <= localStorage.length; i++) {
-    var tr = document.createElement('tr')
-    tr.innerHTML = '<td><img src="' + JSON.parse(localStorage.getItem(i)).images[0] + '" width="auto" height="40"></td><td>' + JSON.parse(localStorage.getItem(i)).name + '</td><td>' + JSON.parse(localStorage.getItem(i)).price + " kr" + '</td>'
-    table.appendChild(tr)
-    console.log(i, table)
-    if (localStorage.length - 1 == i) {
-      console.log('test', table)
-      list.appendChild(table)
-    }
+  tr.innerHTML = '<th>Image</th><th>Name</th><th>Price</th><th>Count</th><th>Actions</th>'
+  let thead = document.createElement('thead')
+  thead.className = "thead-dark"
+  thead.appendChild(tr)
+  table.appendChild(thead)
+  let totalPrice = 0;
+  for (let i = 0; i <= localStorage.length; i++) {
+      console.log('am',i)
+      let tr = document.createElement('tr')
+      let item = JSON.parse(localStorage.getItem(i)) ;
+      totalPrice = totalPrice+(item.price * (item.count ? item.count : 1));
+      tr.innerHTML = '<td><img src="' + item.images[0] + '" width="auto" height="40"></td><td>' + item.name + '</td><td>' + item.price + 'kr</td><td id="count_'+i+'">'+(item.count ? item.count : 1)+'</td><td><button onclick="addProduct('+i+')" class="btn btn-primary" id="plus">+</button><button class="btn btn-danger" onclick="removeProduct('+i+')">-</button></td>'
+      tr.className = 'product-tr'
+      table.appendChild(tr)
+      if (localStorage.length - 1 == i) {
+        let tr = document.createElement('tr')
+        tr.innerHTML = '<th>Total Price</th><th id="totalPrice" style="text-align: center" colspan="4">'+totalPrice+'</th>'
+        tr.className = 'bg-primary';
+        table.appendChild(tr)
+        table.className = 'table mt-5';
+        list.appendChild(table)
+      }
   }
+}
 
 
-
-  // var values = [],
-  //     keys = Object.keys(localStorage),
-  //     i = keys.length;
-  //   console.log()
-  // while (i--) {
-  //   values.push(localStorage.getItem(keys[i]));
-  //   console.log(localStorage.getItem(keys[i]));
-  // }
-  // console.log(values);
-  // return values;
+function addProduct(id) {
+  let item = JSON.parse(localStorage.getItem(id))
+  if(item.count)
+    item['count'] = item.count + 1
+  else
+    item['count'] = 2
+  localStorage.setItem(id,JSON.stringify(item))
+  document.getElementById('count_'+id).innerText = item.count
+  let price = document.getElementById('totalPrice')
+      price.innerHTML = parseInt(price.innerText) + item.price
+}
+function removeProduct(id) {
+  let item = JSON.parse(localStorage.getItem(id))
+  if(item.count && item.count > 1)
+   {
+     item['count'] = item.count - 1
+     localStorage.setItem(id,JSON.stringify(item))
+     document.getElementById('count_'+id).innerText = item.count
+   }else if(item.count == undefined || item.count == 1){
+    localStorage.removeItem(id)
+    document.getElementsByClassName('product-tr')[id].style.display = 'none'
+  }
+  let price = document.getElementById('totalPrice')
+  price.innerHTML = parseInt(price.innerText) - item.price
 }
 
 // function for returning to homepage from cartpage
