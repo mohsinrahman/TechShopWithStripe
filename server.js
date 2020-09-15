@@ -39,11 +39,19 @@ app.post('/api/checkout-session', async (req, res) => {
 
 app.get('/api/products', async (req, res) => {
 
-    const products = await stripe.products.list({
-        
+    const products = await stripe.products.list({});
+    const prices = await stripe.prices.list({});
+    console.log(prices)
+    products.data.forEach(product => {
+        prices.data.forEach(price => {
+            if(price.product == product.id) {
+                product.price = price.unit_amount
+            }
+        });
     });
     console.log(products)
     res.json(products)
 });
+
 
 app.listen(3000, () => console.log('Server is running on port 3000'))

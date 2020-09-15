@@ -65,6 +65,9 @@ async function products() {
     p.className = "card-text";
     p.innerText = product.description
     div4.appendChild(p);
+    let price = document.createElement("p")
+    price.innerHTML = product.price + " kr"
+    div4.appendChild(price)
     let div5 = document.createElement("div");
     div5.className = "d-flex justify-content-between align-items-center";
     div4.appendChild(div5);
