@@ -119,3 +119,9 @@ a {
     font-size: 25px;
     color: black;
 }
+
+.productName {
+    font-weight: bold;
+    text-align: center;
+    padding-top: 10px;
+}
