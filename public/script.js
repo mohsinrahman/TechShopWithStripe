@@ -123,7 +123,7 @@ function shopBasket() {
   table.appendChild(tr)
   for (var i = 0; i <= localStorage.length; i++) {
     var tr = document.createElement('tr')
-    tr.innerHTML = '<td><img src="' + JSON.parse(localStorage.getItem(i)).images[0] + '" width="auto" height="40"></td><td>' + JSON.parse(localStorage.getItem(i)).name + '</td><td>99$</td>'
+    tr.innerHTML = '<td><img src="' + JSON.parse(localStorage.getItem(i)).images[0] + '" width="auto" height="40"></td><td>' + JSON.parse(localStorage.getItem(i)).name + '</td><td>' + JSON.parse(localStorage.getItem(i)).price + '</td>'
     table.appendChild(tr)
     console.log(i, table)
     if (localStorage.length - 1 == i) {
