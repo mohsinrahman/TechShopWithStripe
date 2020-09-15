@@ -1,12 +1,13 @@
 let stripe;
 window.addEventListener("load", main);
+
 function main() {
   /*
       const toCheckout = document.getElementById('toCheckout')
       toCheckout.addEventListener('click', proceedToCheckout) */
 
   stripe = Stripe(
-      "pk_test_51HMqSzB979vlbHgipDCCEbRksJjH513MddC8fw21FjfEy8DuJXosMnVFVTIZugCBKPgVwoy59rqRfmr2lrn0G8I100oKXpFnx8"
+    "pk_test_51HMqSzB979vlbHgipDCCEbRksJjH513MddC8fw21FjfEy8DuJXosMnVFVTIZugCBKPgVwoy59rqRfmr2lrn0G8I100oKXpFnx8"
   );
   products();
 }
@@ -24,8 +25,6 @@ function main() {
 
 async function products() {
   let div1 = document.getElementById("products");
-
-  console.log("div1");
   const response = await fetch("/api/products", {
     method: "GET"
   });
@@ -83,23 +82,23 @@ async function products() {
       if (productToAdd == productList.data[i].name) {
         console.log(productList.data[i]);
         cartArray.push(productList.data[i]);
-        console.log('clear',localStorage.length)
+        console.log('clear', localStorage.length)
 
       }
     }
 
 
     console.log(cartArray);
-    cartArray.map((value,key)=>{
+    cartArray.map((value, key) => {
       localStorage.setItem(
-          key,
-          JSON.stringify(
-              value
-          )
+        key,
+        JSON.stringify(
+          value
+        )
       )
     })
-    var itemCount =document.getElementById('itemCount');
-    if(cartArray.length == 1) itemCount.style.opacity = 1
+    var itemCount = document.getElementById('itemCount');
+    if (cartArray.length == 1) itemCount.style.opacity = 1
     itemCount.innerText = cartArray.length
   }
 
@@ -115,13 +114,13 @@ function shopBasket() {
   var tr = document.createElement('tr')
   tr.innerHTML = '<th>Image</th><th>Name</th><th>Price</th>'
   table.appendChild(tr)
-  for(var i=0;i<=localStorage.length;i++){
-       var tr = document.createElement('tr')
-       tr.innerHTML = '<td><img src="'+JSON.parse(localStorage.getItem(i)).images[0]+'" width="auto" height="40"></td><td>'+JSON.parse(localStorage.getItem(i)).name+'</td><td>99$</td>'
-       table.appendChild(tr)
-      console.log(i,table)
-    if(localStorage.length-1 == i){
-      console.log('test',table)
+  for (var i = 0; i <= localStorage.length; i++) {
+    var tr = document.createElement('tr')
+    tr.innerHTML = '<td><img src="' + JSON.parse(localStorage.getItem(i)).images[0] + '" width="auto" height="40"></td><td>' + JSON.parse(localStorage.getItem(i)).name + '</td><td>99$</td>'
+    table.appendChild(tr)
+    console.log(i, table)
+    if (localStorage.length - 1 == i) {
+      console.log('test', table)
       list.appendChild(table)
     }
   }
