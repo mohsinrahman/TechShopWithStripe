@@ -2,17 +2,17 @@ let stripe;
 window.addEventListener("load", main);
 
 function main() {
-  /*
-      const toCheckout = document.getElementById('toCheckout')
-      toCheckout.addEventListener('click', proceedToCheckout) */
-
+  
   stripe = Stripe(
     "pk_test_51HMqSzB979vlbHgipDCCEbRksJjH513MddC8fw21FjfEy8DuJXosMnVFVTIZugCBKPgVwoy59rqRfmr2lrn0G8I100oKXpFnx8"
-  );
-  products();
+    );
+    products();
+    
+        const toCheckout = document.getElementById('toCheckout')
+        toCheckout.addEventListener('click', proceedToCheckout)
 }
 
-/* async function proceedToCheckout() {
+async function proceedToCheckout() {
     try {
         const response = await fetch('/api/checkout-session', { method: 'POST'})
         const session = await response.json()
@@ -21,7 +21,7 @@ function main() {
     } catch (error) {
 
     }
-} */
+}
 
 async function products() {
   let div1 = document.getElementById("products");
@@ -31,10 +31,8 @@ async function products() {
   const productList = await response.json();
   let cartArray = [];
   for (let i = 0; i < productList.data.length; i++) {
-    console.log(productList);
     const product = productList.data[i];
     let id = product.id;
-    console.log(id);
     let div2 = document.createElement("div");
     div2.className = "col-md-4";
     div1.appendChild(div2);
@@ -123,7 +121,7 @@ function shopBasket() {
   table.appendChild(tr)
   for (var i = 0; i <= localStorage.length; i++) {
     var tr = document.createElement('tr')
-    tr.innerHTML = '<td><img src="' + JSON.parse(localStorage.getItem(i)).images[0] + '" width="auto" height="40"></td><td>' + JSON.parse(localStorage.getItem(i)).name + '</td><td>' + JSON.parse(localStorage.getItem(i)).price + '</td>'
+    tr.innerHTML = '<td><img src="' + JSON.parse(localStorage.getItem(i)).images[0] + '" width="auto" height="40"></td><td>' + JSON.parse(localStorage.getItem(i)).name + '</td><td>' + JSON.parse(localStorage.getItem(i)).price + " kr" + '</td>'
     table.appendChild(tr)
     console.log(i, table)
     if (localStorage.length - 1 == i) {

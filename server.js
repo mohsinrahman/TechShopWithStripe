@@ -14,13 +14,13 @@ app.post('/api/checkout-session', async (req, res) => {
             payment_method_types: ["card"],
             line_items: [
             {
-                description: 'iphone x',
+                description: "hej",
                 price_data: {
                 currency: "sek",
                 product_data: {
-                    name: "phone",
+                    name: "iphone",
                 },
-                unit_amount: 1200,
+                unit_amount: "1200",
                 },
                 quantity: 1,
             },
@@ -41,7 +41,6 @@ app.get('/api/products', async (req, res) => {
 
     const products = await stripe.products.list({});
     const prices = await stripe.prices.list({});
-    console.log(prices)
     products.data.forEach(product => {
         prices.data.forEach(price => {
             if(price.product == product.id) {
@@ -49,7 +48,6 @@ app.get('/api/products', async (req, res) => {
             }
         });
     });
-    console.log(products)
     res.json(products)
 });
 
