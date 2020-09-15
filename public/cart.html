@@ -16,7 +16,21 @@
             integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
             crossorigin="anonymous"
     />
-   
+    <style>
+        table button{
+            border-radius: 50% !important;
+            width: 28px;
+            height: 28px;
+            text-align: center;
+            padding: 0px !important;
+        }
+        table button:first-child{
+            margin-right:5px;
+        }
+        #totalPrice::after{
+            content: 'kr';
+        }
+    </style>
 </head>
 
 <body onload="shopBasket()">
