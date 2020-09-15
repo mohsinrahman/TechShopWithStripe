@@ -50,15 +50,19 @@ async function products() {
     img.setAttribute("width", "150px");
     img.setAttribute("alt", "Responsive image");
     divImg.appendChild(img);
+    
+    let productName = document.createElement("p")
+    productName.innerText = product.name
+    productName.classList = "productName"
+    div3.appendChild(productName)
     div3.appendChild(divImg);
-
 
     let div4 = document.createElement("div");
     div4.className = "card-body";
     div3.appendChild(div4);
     let p = document.createElement("p");
     p.className = "card-text";
-    p.innerText = "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.";
+    p.innerText = product.description
     div4.appendChild(p);
     let div5 = document.createElement("div");
     div5.className = "d-flex justify-content-between align-items-center";

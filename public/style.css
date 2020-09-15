@@ -128,7 +128,14 @@ a {
     color: black;
 }
 
+<<<<<<< HEAD
 .phone {
 
     margin-top: 10px;
+=======
+.productName {
+    font-weight: bold;
+    text-align: center;
+    padding-top: 10px;
+>>>>>>> 057e9523022598dec46d85a317462acc1cf2dfdb
 }
