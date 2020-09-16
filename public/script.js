@@ -9,7 +9,8 @@ function main() {
   stripe = Stripe(
     "pk_test_51HMqSzB979vlbHgipDCCEbRksJjH513MddC8fw21FjfEy8DuJXosMnVFVTIZugCBKPgVwoy59rqRfmr2lrn0G8I100oKXpFnx8"
   );
-  products();
+
+  // products();
 }
 
 /* async function proceedToCheckout() {
@@ -111,15 +112,8 @@ async function products() {
 
       }
     }
-    console.log('amir', cartArray);
-    cartArray.map((value, key) => {
-      localStorage.setItem(
-        "item" + key,
-        JSON.stringify(
-          value
-        )
-      )
-    })
+    localStorage.setItem("cartItems", JSON.stringify(cartArray))
+
     var itemCount = document.getElementById('itemCount');
     if (cartArray.length == 1) itemCount.style.opacity = 1
     itemCount.innerText = cartArray.length
@@ -131,7 +125,8 @@ async function products() {
 }
 
 function shopBasket() {
-  var list = document.getElementById('productList')
+  var list = document.getElementById('cartList')
+  console.log(list)
   var table = document.createElement('table')
   table.id = 'shop-basket-table'
   var tr = document.createElement('tr')
@@ -141,10 +136,22 @@ function shopBasket() {
   thead.appendChild(tr)
   table.appendChild(thead)
   let totalPrice = 0;
-  for (let i = 0; i <= localStorage.length; i++) {
-    console.log('am', i)
+
+  const cartItemsString = localStorage.getItem("cartItems")
+  const cartItems = JSON.parse(cartItemsString || "[]");
+
+  console.log({
+    cartItems
+  })
+
+  for (let i = 0; i < cartItems.length; i++) {
     let tr = document.createElement('tr')
-    let item = JSON.parse(localStorage.getItem(i));
+    let item = cartItems[i];
+
+    console.log({
+      item
+    })
+
     totalPrice = totalPrice + (item.price * (item.count ? item.count : 1));
     tr.innerHTML = '<td><img src="' + item.images[0] + '" width="auto" height="40"></td><td>' + item.name + '</td><td>' + item.price + 'kr</td><td id="count_' + i + '">' + (item.count ? item.count : 1) + '</td><td><button onclick="addProduct(' + i + ')" class="btn btn-primary" id="plus">+</button><button class="btn btn-danger" onclick="removeProduct(' + i + ')">-</button></td>'
     tr.className = 'product-tr'
@@ -155,9 +162,10 @@ function shopBasket() {
       tr.className = 'bg-primary';
       table.appendChild(tr)
       table.className = 'table mt-5';
-      list.appendChild(table)
     }
   }
+
+  list.appendChild(table)
 }
 
 
