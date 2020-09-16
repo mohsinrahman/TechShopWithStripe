@@ -24,18 +24,18 @@ function main() {
 } */
 
 async function products() {
+  let cartArray = [];
   let div1 = document.getElementById("products");
   const response = await fetch("/api/products", {
     method: "GET"
   });
   const productList = await response.json();
-  let cartArray = [];
+
   for (let i = 0; i < productList.data.length; i++) {
     console.log(productList);
     const product = productList.data[i];
-    let id = product.id;
-    console.log(id);
     let div2 = document.createElement("div");
+    console.log(div1);
     div2.className = "col-md-4";
     div1.appendChild(div2);
     let div3 = document.createElement("div");
@@ -77,42 +77,46 @@ async function products() {
     btn.className = "btn btn-sm btn-outline-secondary";
     btn.setAttribute("type", "button");
     btn.innerText = "Köp";
+
     btn.onclick = function () {
-      addProductCart(product.name);
+      cartArray.push(product)
+      addProductCart(product.name, cartArray);
+
     };
     div6.appendChild(btn);
   }
 
-  function addProductCart(name) {
+  function addProductCart(name, cartArray) {
+    console.log(cartArray)
+
     let productToAdd = name;
-    for (let i = 0; i < productList.data.length; i++) {
+    for (let i = 0; i < cartArray.length; i++) {
       let push = true
-      if (productToAdd == productList.data[i].name) {
-        if(cartArray.length > 0){
-          cartArray.map((value,key)=>{
-            if(value.name == productList.data[i].name)
-            {
-              let object = productList.data[i]
-               object.count ?  object['count'] = object.count + 1 :  object['count'] = 2
+      if (productToAdd == cartArray.name) {
+        if (cartArray.length > 0) {
+          cartArray.map((value, key) => {
+            if (value.name == cartArray[i].name) {
+              let object = cartArray[i]
+              object.count ? object['count'] = object.count + 1 : object['count'] = 2
               push = false;
             }
             // if(cartArray.length == key){
             // }
           })
-          if(push)
-            cartArray.push(productList.data[i]);
+          /*   if (push)
+              cartArray.push(productList.data[i]); */
         }
-        else
-          cartArray.push(productList.data[i]);
+        /* else
+                 cartArray.push(productList.data[i]); */
 
       }
     }
-    console.log('amir',cartArray);
+    console.log('amir', cartArray);
     cartArray.map((value, key) => {
       localStorage.setItem(
-        key,
+        "item" + key,
         JSON.stringify(
-            value
+          value
         )
       )
     })
@@ -138,44 +142,44 @@ function shopBasket() {
   table.appendChild(thead)
   let totalPrice = 0;
   for (let i = 0; i <= localStorage.length; i++) {
-      console.log('am',i)
+    console.log('am', i)
+    let tr = document.createElement('tr')
+    let item = JSON.parse(localStorage.getItem(i));
+    totalPrice = totalPrice + (item.price * (item.count ? item.count : 1));
+    tr.innerHTML = '<td><img src="' + item.images[0] + '" width="auto" height="40"></td><td>' + item.name + '</td><td>' + item.price + 'kr</td><td id="count_' + i + '">' + (item.count ? item.count : 1) + '</td><td><button onclick="addProduct(' + i + ')" class="btn btn-primary" id="plus">+</button><button class="btn btn-danger" onclick="removeProduct(' + i + ')">-</button></td>'
+    tr.className = 'product-tr'
+    table.appendChild(tr)
+    if (localStorage.length - 1 == i) {
       let tr = document.createElement('tr')
-      let item = JSON.parse(localStorage.getItem(i)) ;
-      totalPrice = totalPrice+(item.price * (item.count ? item.count : 1));
-      tr.innerHTML = '<td><img src="' + item.images[0] + '" width="auto" height="40"></td><td>' + item.name + '</td><td>' + item.price + 'kr</td><td id="count_'+i+'">'+(item.count ? item.count : 1)+'</td><td><button onclick="addProduct('+i+')" class="btn btn-primary" id="plus">+</button><button class="btn btn-danger" onclick="removeProduct('+i+')">-</button></td>'
-      tr.className = 'product-tr'
+      tr.innerHTML = '<th>Total Price</th><th id="totalPrice" style="text-align: center" colspan="4">' + totalPrice + '</th>'
+      tr.className = 'bg-primary';
       table.appendChild(tr)
-      if (localStorage.length - 1 == i) {
-        let tr = document.createElement('tr')
-        tr.innerHTML = '<th>Total Price</th><th id="totalPrice" style="text-align: center" colspan="4">'+totalPrice+'</th>'
-        tr.className = 'bg-primary';
-        table.appendChild(tr)
-        table.className = 'table mt-5';
-        list.appendChild(table)
-      }
+      table.className = 'table mt-5';
+      list.appendChild(table)
+    }
   }
 }
 
 
 function addProduct(id) {
   let item = JSON.parse(localStorage.getItem(id))
-  if(item.count)
+  if (item.count)
     item['count'] = item.count + 1
   else
     item['count'] = 2
-  localStorage.setItem(id,JSON.stringify(item))
-  document.getElementById('count_'+id).innerText = item.count
+  localStorage.setItem(id, JSON.stringify(item))
+  document.getElementById('count_' + id).innerText = item.count
   let price = document.getElementById('totalPrice')
-      price.innerHTML = parseInt(price.innerText) + item.price
+  price.innerHTML = parseInt(price.innerText) + item.price
 }
+
 function removeProduct(id) {
   let item = JSON.parse(localStorage.getItem(id))
-  if(item.count && item.count > 1)
-   {
-     item['count'] = item.count - 1
-     localStorage.setItem(id,JSON.stringify(item))
-     document.getElementById('count_'+id).innerText = item.count
-   }else if(item.count == undefined || item.count == 1){
+  if (item.count && item.count > 1) {
+    item['count'] = item.count - 1
+    localStorage.setItem(id, JSON.stringify(item))
+    document.getElementById('count_' + id).innerText = item.count
+  } else if (item.count == undefined || item.count == 1) {
     localStorage.removeItem(id)
     document.getElementsByClassName('product-tr')[id].style.display = 'none'
   }
