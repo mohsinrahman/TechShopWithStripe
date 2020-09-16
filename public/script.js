@@ -10,7 +10,7 @@ function main() {
     "pk_test_51HMqSzB979vlbHgipDCCEbRksJjH513MddC8fw21FjfEy8DuJXosMnVFVTIZugCBKPgVwoy59rqRfmr2lrn0G8I100oKXpFnx8"
   );
 
-  // products();
+  products();
 }
 
 /* async function proceedToCheckout() {
