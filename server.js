@@ -45,6 +45,7 @@ app.get('/api/products', async (req, res) => {
         prices.data.forEach(price => {
             if(price.product == product.id) {
                 product.price = price.unit_amount
+                product.priceId = price.id
             }
         });
     });
