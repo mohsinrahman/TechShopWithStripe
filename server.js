@@ -35,6 +35,21 @@ app.post('/api/checkout-session', async (req, res) => {
     }
 })
 
+app.post('/api/verify-checkout-session', async (req, res) => {
+    try {
+        const session = await stripe.checkout.sessions.retrieve(req.body.sessionId)
+        console.log(session)
+        if(session) {
+            res.send({ isVerified: true })
+        } else {
+            throw new Error('no session')
+        }
+    } catch (error) {
+        console.error(error)
+        res.send({ isVerified: false });        
+    }
+});
+
 app.get('/api/products', async (req, res) => {
 
     const products = await stripe.products.list({});
