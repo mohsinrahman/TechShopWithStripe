@@ -32,9 +32,17 @@ app.post('/api/checkout-session', async (req, res) => {
 app.post('/api/verify-checkout-session', async (req, res) => {
     try {
         const session = await stripe.checkout.sessions.retrieve(req.body.sessionId)
-        console.log(session)
         if(session) {
-            res.send({ isVerified: true })
+            if(session.payment_status==='paid') {
+                res.json({ isVerified: true })
+                // creating a new file
+                fs.writeFile('orders.json', JSON.stringify(orders), function (err) {
+                    if (err) throw err;
+                    console.log('Saved!');
+                  });
+            } else {
+                throw new Error('not paid')
+            }
         } else {
             throw new Error('no session')
         }
