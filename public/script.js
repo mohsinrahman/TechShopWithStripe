@@ -135,6 +135,7 @@ function shopBasket() {
       tr.className = 'bg-primary';
       table.appendChild(tr)
       table.className = 'table mt-4';
+      localStorage.setItem("totalPrice", JSON.stringify(totalPrice))
     }
   }
   list.appendChild(table)
