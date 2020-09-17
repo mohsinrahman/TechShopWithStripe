@@ -10,7 +10,7 @@ function main() {
     "pk_test_51HMqSzB979vlbHgipDCCEbRksJjH513MddC8fw21FjfEy8DuJXosMnVFVTIZugCBKPgVwoy59rqRfmr2lrn0G8I100oKXpFnx8"
   );
 
-  products();
+  // products();
 }
 
 /* async function proceedToCheckout() {
@@ -25,13 +25,12 @@ function main() {
 } */
 
 async function products() {
-  let cartArray = [];
+  let cartArray = []
   let div1 = document.getElementById("products");
   const response = await fetch("/api/products", {
     method: "GET"
   });
   const productList = await response.json();
-
   for (let i = 0; i < productList.data.length; i++) {
     console.log(productList);
     const product = productList.data[i];
@@ -80,40 +79,25 @@ async function products() {
     btn.innerText = "Köp";
 
     btn.onclick = function () {
+      let oldCartItems = JSON.parse(localStorage.getItem('cartItems'))
+      if(oldCartItems)
+        cartArray = oldCartItems;
+        let uniq = cartArray.map(function(value){ return value.name });
+        let index = uniq.indexOf(product.name)
+        if(index == -1)
       cartArray.push(product)
-      addProductCart(product.name, cartArray);
-
+      else
+     {
+       let object = cartArray[index]
+       object.count ? object['count'] = object.count + 1 : object['count'] = 2
+     }
+      addProductCart(cartArray);
     };
     div6.appendChild(btn);
   }
 
-  function addProductCart(name, cartArray) {
-    console.log(cartArray)
-
-    let productToAdd = name;
-    for (let i = 0; i < cartArray.length; i++) {
-      let push = true
-      if (productToAdd == cartArray.name) {
-        if (cartArray.length > 0) {
-          cartArray.map((value, key) => {
-            if (value.name == cartArray[i].name) {
-              let object = cartArray[i]
-              object.count ? object['count'] = object.count + 1 : object['count'] = 2
-              push = false;
-            }
-            // if(cartArray.length == key){
-            // }
-          })
-          /*   if (push)
-              cartArray.push(productList.data[i]); */
-        }
-        /* else
-                 cartArray.push(productList.data[i]); */
-
-      }
-    }
+  function addProductCart(cartArray) {
     localStorage.setItem("cartItems", JSON.stringify(cartArray))
-
     var itemCount = document.getElementById('itemCount');
     if (cartArray.length == 1) itemCount.style.opacity = 1
     itemCount.innerText = cartArray.length
@@ -126,7 +110,7 @@ async function products() {
 
 function shopBasket() {
   var list = document.getElementById('cartList')
-  console.log(list)
+  list.innerHTML = ''
   var table = document.createElement('table')
   table.id = 'shop-basket-table'
   var tr = document.createElement('tr')
@@ -136,63 +120,56 @@ function shopBasket() {
   thead.appendChild(tr)
   table.appendChild(thead)
   let totalPrice = 0;
-
   const cartItemsString = localStorage.getItem("cartItems")
   const cartItems = JSON.parse(cartItemsString || "[]");
-
-  console.log({
-    cartItems
-  })
 
   for (let i = 0; i < cartItems.length; i++) {
     let tr = document.createElement('tr')
     let item = cartItems[i];
-
-    console.log({
-      item
-    })
-
+   
     totalPrice = totalPrice + (item.price * (item.count ? item.count : 1));
     tr.innerHTML = '<td><img src="' + item.images[0] + '" width="auto" height="40"></td><td>' + item.name + '</td><td>' + item.price + 'kr</td><td id="count_' + i + '">' + (item.count ? item.count : 1) + '</td><td><button onclick="addProduct(' + i + ')" class="btn btn-primary" id="plus">+</button><button class="btn btn-danger" onclick="removeProduct(' + i + ')">-</button></td>'
     tr.className = 'product-tr'
     table.appendChild(tr)
-    if (localStorage.length - 1 == i) {
+    if (cartItems.length - 1 == i) {
       let tr = document.createElement('tr')
       tr.innerHTML = '<th>Total Price</th><th id="totalPrice" style="text-align: center" colspan="4">' + totalPrice + '</th>'
       tr.className = 'bg-primary';
       table.appendChild(tr)
-      table.className = 'table mt-5';
+      table.className = 'table mt-4';
     }
   }
-
   list.appendChild(table)
 }
 
 
 function addProduct(id) {
-  let item = JSON.parse(localStorage.getItem(id))
-  if (item.count)
-    item['count'] = item.count + 1
+  let cartItems = JSON.parse(localStorage.getItem('cartItems'))
+  if (cartItems[id].count != undefined)
+    {cartItems[id].count ++}
   else
-    item['count'] = 2
-  localStorage.setItem(id, JSON.stringify(item))
-  document.getElementById('count_' + id).innerText = item.count
+   { cartItems[id].count = 2}
+  localStorage.setItem('cartItems', JSON.stringify(cartItems))
+  document.getElementById('count_' + id).innerText = cartItems[id].count
   let price = document.getElementById('totalPrice')
-  price.innerHTML = parseInt(price.innerText) + item.price
+  price.innerHTML = parseInt(price.innerText) + cartItems[id].price
+  this.shopBasket()
 }
 
 function removeProduct(id) {
-  let item = JSON.parse(localStorage.getItem(id))
-  if (item.count && item.count > 1) {
-    item['count'] = item.count - 1
-    localStorage.setItem(id, JSON.stringify(item))
-    document.getElementById('count_' + id).innerText = item.count
-  } else if (item.count == undefined || item.count == 1) {
-    localStorage.removeItem(id)
+  let cartItems = JSON.parse(localStorage.getItem('cartItems'))
+  if (cartItems[id].count != undefined && cartItems[id].count > 1) {
+    cartItems[id].count --;
+    document.getElementById('count_' + id).innerText = cartItems[id].count
+  } else if (cartItems[id].count == undefined || cartItems[id].count == 1) {
+    cartItems.splice(id,1)
     document.getElementsByClassName('product-tr')[id].style.display = 'none'
   }
+  localStorage.setItem('cartItems', JSON.stringify(cartItems))
   let price = document.getElementById('totalPrice')
-  price.innerHTML = parseInt(price.innerText) - item.price
+  if(cartItems[id] && cartItems.length > 0)
+    price.innerHTML = parseInt(price.innerText) - cartItems[id].price
+  this.shopBasket()
 }
 
 // function for returning to homepage from cartpage
