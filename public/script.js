@@ -12,16 +12,32 @@ function main() {
 }
 
 async function proceedToCheckout() {
-  try {
-    const response = await fetch('/api/checkout-session', {
-      method: 'POST'
-    })
-    const session = await response.json()
-    // Proceed to open the checkout page
-    const result = await stripe.redirectToCheckout({
-      sessionId: session.id
-    });
-  } catch (error) {
+  const cartTotal = JSON.parse(localStorage.getItem('cartItems'))
+  console.log(cartTotal)
+  const showInCheckout = cartTotal.map((product) => {
+    return {
+      price_data: {
+        currency: "sek",
+        product_data: {
+          name: product.name,
+        },
+        unit_amount: product.price + "00"
+      },
+      quantity: product.count,
+    }
+  })
+
+  const response = await fetch("/api/checkout-session", {
+    method: 'POST', 
+    body: JSON.stringify(showInCheckout),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  const session = await response.json();
+  const result = await stripe.redirectToCheckout({sessionId: session.id});
+
+  if (result.error) {
 
   }
 }
@@ -194,9 +210,4 @@ function removeProduct(id) {
   if (cartItems[id] && cartItems.length > 0)
     price.innerHTML = parseInt(price.innerText) - cartItems[id].price
   this.shopBasket()
-}
-
-// function for returning to homepage from cartpage
-function backToHomepage() {
-  window.location = "index.html"
 }

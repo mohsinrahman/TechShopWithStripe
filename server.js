@@ -9,20 +9,10 @@ app.use('/api', express.json())
 app.use(express.static('public'))
 
 app.post('/api/checkout-session', async (req, res) => {
-    const totalPrice = JSON.parse(localStorage.getItem('totalPrice'))
-    console.log(totalPrice)
-    
     try {
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ["card"],
-            line_items: [
-            {
-                unit_amount: totalPrice,
-                price_data: {
-                currency: "sek",
-                }
-            },
-            ],
+            line_items: req.body,
             mode: "payment",
             success_url: "http://localhost:3000/?session_id={CHECKOUT_SESSION_ID}",
             cancel_url: "http://localhost:3000",
