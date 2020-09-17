@@ -56,7 +56,7 @@ async function verifyCheckoutSession() {
       const session = await response.json()
       console.log(session.isVerified)
       if(session.isVerified) {
-          window.location.pathname = "confirmation"
+          window.location = "confirmation.html"
       } else {
           alert('Beställningen misslyckades')
       }
