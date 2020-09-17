@@ -5,7 +5,7 @@ function main() {
 
   stripe = Stripe("pk_test_51HMqSzB979vlbHgipDCCEbRksJjH513MddC8fw21FjfEy8DuJXosMnVFVTIZugCBKPgVwoy59rqRfmr2lrn0G8I100oKXpFnx8");
 
-  products();
+ 
 
   const toCheckout = document.getElementById('toCheckout')
   toCheckout.addEventListener('click', proceedToCheckout)
@@ -34,10 +34,8 @@ async function products() {
   });
   const productList = await response.json();
   for (let i = 0; i < productList.data.length; i++) {
-    console.log(productList);
     const product = productList.data[i];
     let div2 = document.createElement("div");
-    console.log(div1);
     div2.className = "col-md-4";
     div1.appendChild(div2);
     let div3 = document.createElement("div");
