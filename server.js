@@ -1,6 +1,9 @@
 const express = require('express')
 require('dotenv').config('.env')
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+const fs = require('fs')
+
+const orders = require(__dirname+'/orders.json');
 
 const app = express();
 

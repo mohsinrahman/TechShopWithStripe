@@ -34,13 +34,7 @@ async function proceedToCheckout() {
     }
   });
   const session = await response.json();
-  const result = await stripe.redirectToCheckout({
-    sessionId: session.id
-  });
-
-  if (result.error) {
-
-  }
+  const result = await stripe.redirectToCheckout({ sessionId: session.id });
 }
 
 async function verifyCheckoutSession() {
