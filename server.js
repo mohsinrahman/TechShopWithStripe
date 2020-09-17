@@ -2,8 +2,6 @@ const express = require('express')
 require('dotenv').config('.env')
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
-const HandyStorage = require('handy-storage');
-
 const app = express();
 
 app.use('/api', express.json())
@@ -34,17 +32,6 @@ app.post('/api/verify-checkout-session', async (req, res) => {
         console.log(session)
         if(session) {
             res.send({ isVerified: true })
-
-            const orders = new HandyStorage({
-                beautify: true
-            });
-            orders.connect('./orders.json');
-     
-            orders.setState({
-            name: req.body.product.name,
-            price: req.body.product.price,
-            quantity: req.body.product.count
-    })
         } else {
             throw new Error('no session')
         }

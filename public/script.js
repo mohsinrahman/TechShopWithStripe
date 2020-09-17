@@ -13,7 +13,6 @@ function main() {
 
 async function proceedToCheckout() {
   const cartTotal = JSON.parse(localStorage.getItem('cartItems'))
-  console.log(cartTotal)
   const showInCheckout = cartTotal.map((product) => {
     return {
       price_data: {
@@ -172,10 +171,6 @@ function shopBasket() {
     let item = cartItems[i];
 
     totalPrice = totalPrice + (item.price * (item.count ? item.count : 1));
-
-
-
-    console.log(totalPrice);
     tr.innerHTML = '<td><img src="' + item.images[0] + '" width="auto" height="40"></td><td>' + item.name + '</td><td>' + item.price + 'kr</td><td id="count_' + i + '">' + (item.count ? item.count : 1) + '</td><td><button onclick="addProduct(' + i + ')" class="btn btn-primary" id="plus">+</button><button class="btn btn-danger" onclick="removeProduct(' + i + ')">-</button></td>'
     tr.className = 'product-tr'
     table.appendChild(tr)
