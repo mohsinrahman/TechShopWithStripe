@@ -5,27 +5,67 @@ function main() {
 
   stripe = Stripe("pk_test_51HMqSzB979vlbHgipDCCEbRksJjH513MddC8fw21FjfEy8DuJXosMnVFVTIZugCBKPgVwoy59rqRfmr2lrn0G8I100oKXpFnx8");
 
-  products();
-
   const toCheckout = document.getElementById('toCheckout')
   toCheckout.addEventListener('click', proceedToCheckout)
+
+  verifyCheckoutSession();
 }
 
 async function proceedToCheckout() {
-  try {
-    const response = await fetch('/api/checkout-session', {
-      method: 'POST'
+  const cartTotal = JSON.parse(localStorage.getItem('cartItems'))
+  console.log(cartTotal)
+  const showInCheckout = cartTotal.map((product) => {
+    return {
+      price_data: {
+        currency: "sek",
+        product_data: {
+          name: product.name,
+        },
+        unit_amount: product.price + "00"
+      },
+      quantity: product.count,
+    }
+  })
+
+  const response = await fetch("/api/checkout-session", {
+    method: 'POST',
+    body: JSON.stringify(showInCheckout),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  const session = await response.json();
+  const result = await stripe.redirectToCheckout({
+    sessionId: session.id
+  });
+
+  if (result.error) {
+
+  }
+}
+
+async function verifyCheckoutSession() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const sessionId = urlParams.get('session_id');
+
+  if (sessionId) {
+    console.log(sessionId);
+    const response = await fetch('/api/verify-checkout-session', {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        sessionId
+      })
     })
-
-
-
     const session = await response.json()
-    // Proceed to open the checkout page
-    const result = await stripe.redirectToCheckout({
-      sessionId: session.id
-    });
-  } catch (error) {
-
+    console.log(session.isVerified)
+    if (session.isVerified) {
+      window.location.pathname = "confirmation"
+    } else {
+      alert('Beställningen misslyckades')
+    }
   }
 }
 
@@ -37,10 +77,8 @@ async function products() {
   });
   const productList = await response.json();
   for (let i = 0; i < productList.data.length; i++) {
-    console.log(productList);
     const product = productList.data[i];
     let div2 = document.createElement("div");
-    console.log(div1);
     div2.className = "col-md-4";
     div1.appendChild(div2);
     let div3 = document.createElement("div");
@@ -182,9 +220,4 @@ function removeProduct(id) {
   if (cartItems[id] && cartItems.length > 0)
     price.innerHTML = parseInt(price.innerText) - cartItems[id].price
   this.shopBasket()
-}
-
-// function for returning to homepage from cartpage
-function backToHomepage() {
-  window.location = "index.html"
 }
