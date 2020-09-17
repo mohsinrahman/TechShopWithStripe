@@ -1,19 +1,17 @@
 let stripe;
 window.addEventListener("load", main);
 
-function main() {
-  /*
-      const toCheckout = document.getElementById('toCheckout')
-      toCheckout.addEventListener('click', proceedToCheckout) */
+function main() { 
 
-  stripe = Stripe(
-    "pk_test_51HMqSzB979vlbHgipDCCEbRksJjH513MddC8fw21FjfEy8DuJXosMnVFVTIZugCBKPgVwoy59rqRfmr2lrn0G8I100oKXpFnx8"
-  );
+  stripe = Stripe("pk_test_51HMqSzB979vlbHgipDCCEbRksJjH513MddC8fw21FjfEy8DuJXosMnVFVTIZugCBKPgVwoy59rqRfmr2lrn0G8I100oKXpFnx8");
 
-  // products();
+  products();
+
+  const toCheckout = document.getElementById('toCheckout')
+  toCheckout.addEventListener('click', proceedToCheckout)
 }
 
-/* async function proceedToCheckout() {
+async function proceedToCheckout() {
     try {
         const response = await fetch('/api/checkout-session', { method: 'POST'})
         const session = await response.json()
@@ -22,7 +20,7 @@ function main() {
     } catch (error) {
 
     }
-} */
+}
 
 async function products() {
   let cartArray = []
