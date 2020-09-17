@@ -2,6 +2,8 @@ const express = require('express')
 require('dotenv').config('.env')
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
+const HandyStorage = require('handy-storage');
+
 const app = express();
 
 app.use('/api', express.json())
@@ -9,6 +11,7 @@ app.use('/api', express.json())
 app.use(express.static('public'))
 
 app.post('/api/checkout-session', async (req, res) => {
+
     try {
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ["card"],
@@ -31,13 +34,25 @@ app.post('/api/verify-checkout-session', async (req, res) => {
         console.log(session)
         if(session) {
             res.send({ isVerified: true })
+
+            const orders = new HandyStorage({
+                beautify: true
+            });
+            orders.connect('./orders.json');
+     
+            orders.setState({
+            name: req.body.product.name,
+            price: req.body.product.price,
+            quantity: req.body.product.count
+    })
         } else {
             throw new Error('no session')
         }
     } catch (error) {
         console.error(error)
         res.send({ isVerified: false });        
-    }
+    }     
+    
 });
 
 app.get('/api/products', async (req, res) => {
