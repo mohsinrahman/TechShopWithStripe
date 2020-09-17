@@ -211,3 +211,7 @@ function removeProduct(id) {
     price.innerHTML = parseInt(price.innerText) - cartItems[id].price
   this.shopBasket()
 }
+
+function backToHomepage() {
+  window.location = "index.html"
+}
