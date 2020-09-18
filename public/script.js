@@ -12,29 +12,39 @@ function main() {
 }
 
 async function proceedToCheckout() {
-  const cartTotal = JSON.parse(localStorage.getItem('cartItems'))
-  const showInCheckout = cartTotal.map((product) => {
-    return {
-      price_data: {
-        currency: "sek",
-        product_data: {
-          name: product.name,
+  try {
+    const cartTotal = JSON.parse(localStorage.getItem('cartItems'))
+    const showInCheckout = cartTotal.map((product) => {
+      return {
+        price_data: {
+          currency: "sek",
+          product_data: {
+            name: product.name,
+          },
+          unit_amount: product.price + "00"
         },
-        unit_amount: product.price + "00"
-      },
-      quantity: product.count,
-    }
-  })
+        quantity: product.count,
+      }
+    })
+    const response = await fetch("/api/checkout-session", {
+      method: 'POST',
+      body: JSON.stringify(showInCheckout),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  
+    const session = await response.json();
 
-  const response = await fetch("/api/checkout-session", {
-    method: 'POST',
-    body: JSON.stringify(showInCheckout),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
-  const session = await response.json();
-  const result = await stripe.redirectToCheckout({ sessionId: session.id });
+    if(response.status > 400) {
+      console.error(session.error)
+      return
+  }
+    const result = await stripe.redirectToCheckout({ sessionId: session.id });
+    
+  } catch (error) {
+    console.error(error) 
+  }
 }
 
 async function verifyCheckoutSession() {
