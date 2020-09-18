@@ -1,6 +1,9 @@
 const express = require('express')
 require('dotenv').config('.env')
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+const fs = require('fs')
+
+const orders = require(__dirname+'/orders.json');
 
 const app = express();
 
@@ -9,7 +12,6 @@ app.use('/api', express.json())
 app.use(express.static('public'))
 
 app.post('/api/checkout-session', async (req, res) => {
-    console.log('amir',req.body)
     try {
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ["card"],
@@ -29,16 +31,25 @@ app.post('/api/checkout-session', async (req, res) => {
 app.post('/api/verify-checkout-session', async (req, res) => {
     try {
         const session = await stripe.checkout.sessions.retrieve(req.body.sessionId)
-        console.log(session)
         if(session) {
-            res.send({ isVerified: true })
+            if(session.payment_status==='paid') {
+                res.json({ isVerified: true })
+                // creating a new file
+                fs.writeFile('orders.json', JSON.stringify(orders), function (err) {
+                    if (err) throw err;
+                    console.log('Saved!');
+                  });
+            } else {
+                throw new Error('not paid')
+            }
         } else {
             throw new Error('no session')
         }
     } catch (error) {
         console.error(error)
         res.send({ isVerified: false });        
-    }
+    }     
+    
 });
 
 app.get('/api/products', async (req, res) => {

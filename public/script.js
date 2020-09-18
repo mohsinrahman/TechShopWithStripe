@@ -3,7 +3,7 @@ window.addEventListener("load", main);
 
 function main() {
 
-  stripe = Stripe("pk_test_51HMqSzB979vlbHgipDCCEbRksJjH513MddC8fw21FjfEy8DuJXosMnVFVTIZugCBKPgVwoy59rqRfmr2lrn0G8I100oKXpFnx8"); 
+  stripe = Stripe("pk_test_51HMqSzB979vlbHgipDCCEbRksJjH513MddC8fw21FjfEy8DuJXosMnVFVTIZugCBKPgVwoy59rqRfmr2lrn0G8I100oKXpFnx8");
 
   //const toCheckout = document.getElementById('toCheckout')
   //toCheckout.addEventListener('click', proceedToCheckout)
@@ -13,7 +13,6 @@ function main() {
 
 async function proceedToCheckout() {
   const cartTotal = JSON.parse(localStorage.getItem('cartItems'))
-  console.log(cartTotal)
   const showInCheckout = cartTotal.map((product) => {
     return {
       price_data: {
@@ -28,38 +27,38 @@ async function proceedToCheckout() {
   })
 
   const response = await fetch("/api/checkout-session", {
-    method: 'POST', 
+    method: 'POST',
     body: JSON.stringify(showInCheckout),
     headers: {
       'Content-Type': 'application/json'
     }
   });
   const session = await response.json();
-  const result = await stripe.redirectToCheckout({sessionId: session.id});
-
-  if (result.error) {
-
-  }
+  const result = await stripe.redirectToCheckout({ sessionId: session.id });
 }
 
 async function verifyCheckoutSession() {
   const urlParams = new URLSearchParams(window.location.search);
   const sessionId = urlParams.get('session_id');
 
-  if(sessionId) {
-      console.log(sessionId);
-      const response = await fetch('/api/verify-checkout-session', { 
-          headers: { "Content-Type": "application/json" },
-          method: 'POST',
-          body: JSON.stringify({ sessionId })
+  if (sessionId) {
+    console.log(sessionId);
+    const response = await fetch('/api/verify-checkout-session', {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        sessionId
       })
-      const session = await response.json()
-      console.log(session.isVerified)
-      if(session.isVerified) {
-          window.location = "confirmation.html"
-      } else {
-          alert('Beställningen misslyckades')
-      }
+    })
+    const session = await response.json()
+    console.log(session.isVerified)
+    if (session.isVerified) {
+      window.location.pathname = "confirmation"
+    } else {
+      alert('Beställningen misslyckades')
+    }
   }
 }
 
