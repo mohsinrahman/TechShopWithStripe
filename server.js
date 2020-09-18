@@ -9,6 +9,7 @@ app.use('/api', express.json())
 app.use(express.static('public'))
 
 app.post('/api/checkout-session', async (req, res) => {
+    console.log('amir',req.body)
     try {
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ["card"],

@@ -40,7 +40,7 @@
     </a>
     <div>
       <a href="/index.html"><button class="btn btn-light">Back</button></a>
-      <button id="toCheckout" class="btn btn-light">Checkout</button>
+      <button  onclick="proceedToCheckout()"  class="btn btn-light toCheckout">Checkout</button>
     </div>
   </div>
 </div>
@@ -107,7 +107,7 @@
         </svg>
         <strong class="headerCartPage">TechStore</strong>
       </a>
-      <button id="toCheckout" class="checkoutButton">To checkout <i class="fas fa-chevron-right"></i></button>
+      <button id="toCheckout" onclick="proceedToCheckout()" class="checkoutButton">To checkout <i class="fas fa-chevron-right"></i></button>
       <button onclick="backToHomepage()" class="checkoutButton"><i class="fas fa-chevron-left"></i>
         Back</button>
       <i class="fab fa-stripe"></i>
