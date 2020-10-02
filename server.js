@@ -39,9 +39,7 @@ app.post('/api/verify-checkout-session', async (req, res) => {
                 res.json({ verified: false })
                 return;
             }
-
         }
-
         const session = await stripe.checkout.sessions.retrieve(req.body.sessionId)
         if (session.payment_status == "paid") {
 
