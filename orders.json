@@ -1,1 +1,142 @@
-{}
+[
+  {
+    "object": "list",
+    "data": [
+      {
+        "id": "li_1HXrHwB979vlbHgisLacJsV0",
+        "object": "item",
+        "amount_subtotal": 4000000,
+        "amount_total": 4000000,
+        "currency": "sek",
+        "description": "Smart Pad",
+        "price": {
+          "id": "price_1HXrHwB979vlbHgiKReOkV7X",
+          "object": "price",
+          "active": false,
+          "billing_scheme": "per_unit",
+          "created": 1601656760,
+          "currency": "sek",
+          "livemode": false,
+          "lookup_key": null,
+          "metadata": {},
+          "nickname": null,
+          "product": "prod_I87XKbOPTPlWyc",
+          "recurring": null,
+          "tiers_mode": null,
+          "transform_quantity": null,
+          "type": "one_time",
+          "unit_amount": 1000000,
+          "unit_amount_decimal": "1000000"
+        },
+        "quantity": 4
+      }
+    ],
+    "has_more": false,
+    "url": "/v1/checkout/sessions/cs_test_awa8kw992hetwZ2LH5Zi6rC2y02c2ErcbnZrkRDGD1ZqNjhmm07J5iuu/line_items"
+  },
+  {
+    "object": "list",
+    "data": [
+      {
+        "id": "li_1HXrTEB979vlbHgi4loc26TJ",
+        "object": "item",
+        "amount_subtotal": 1000000,
+        "amount_total": 1000000,
+        "currency": "sek",
+        "description": "Smart Pad",
+        "price": {
+          "id": "price_1HXrTEB979vlbHgi1JIpZddr",
+          "object": "price",
+          "active": false,
+          "billing_scheme": "per_unit",
+          "created": 1601657460,
+          "currency": "sek",
+          "livemode": false,
+          "lookup_key": null,
+          "metadata": {},
+          "nickname": null,
+          "product": "prod_I87i0iiuZmxYDQ",
+          "recurring": null,
+          "tiers_mode": null,
+          "transform_quantity": null,
+          "type": "one_time",
+          "unit_amount": 1000000,
+          "unit_amount_decimal": "1000000"
+        },
+        "quantity": 1
+      }
+    ],
+    "has_more": false,
+    "url": "/v1/checkout/sessions/cs_test_kCcgOm3afvRZ4GPwQEupkLrRkHM0OeJu9TUEBrmjg37e43E2zdqIWt5I/line_items"
+  },
+  {
+    "object": "list",
+    "data": [
+      {
+        "id": "li_1HXrUyB979vlbHgibxCfSkqW",
+        "object": "item",
+        "amount_subtotal": 2000000,
+        "amount_total": 2000000,
+        "currency": "sek",
+        "description": "Smart Pad",
+        "price": {
+          "id": "price_1HXrUyB979vlbHgiSaOssFEa",
+          "object": "price",
+          "active": false,
+          "billing_scheme": "per_unit",
+          "created": 1601657568,
+          "currency": "sek",
+          "livemode": false,
+          "lookup_key": null,
+          "metadata": {},
+          "nickname": null,
+          "product": "prod_I87kZdT0kYeLdv",
+          "recurring": null,
+          "tiers_mode": null,
+          "transform_quantity": null,
+          "type": "one_time",
+          "unit_amount": 1000000,
+          "unit_amount_decimal": "1000000"
+        },
+        "quantity": 2
+      }
+    ],
+    "has_more": false,
+    "url": "/v1/checkout/sessions/cs_test_CxPQuMhYUiDtkIso4oe1MqqmShvXO6Qk8OgEEALDkdcVt3ItVotHLsqH/line_items"
+  },
+  {
+    "object": "list",
+    "data": [
+      {
+        "id": "li_1HXrd3B979vlbHgio9XDSWcL",
+        "object": "item",
+        "amount_subtotal": 1300000,
+        "amount_total": 1300000,
+        "currency": "sek",
+        "description": "Iphone X",
+        "price": {
+          "id": "price_1HXrd3B979vlbHgiBjZQoYJN",
+          "object": "price",
+          "active": false,
+          "billing_scheme": "per_unit",
+          "created": 1601658069,
+          "currency": "sek",
+          "livemode": false,
+          "lookup_key": null,
+          "metadata": {},
+          "nickname": null,
+          "product": "prod_I87s7gcxU8B954",
+          "recurring": null,
+          "tiers_mode": null,
+          "transform_quantity": null,
+          "type": "one_time",
+          "unit_amount": 650000,
+          "unit_amount_decimal": "650000"
+        },
+        "quantity": 2
+      }
+    ],
+    "has_more": false,
+    "url": "/v1/checkout/sessions/cs_test_PzBkRLJcRiMdK5FqZg4OTABBCbTF0NE0Cimjl3hbvRNGx22eWeDszru2/line_items"
+  }
+]

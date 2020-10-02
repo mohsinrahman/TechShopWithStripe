@@ -30,31 +30,36 @@ app.post('/api/checkout-session', async (req, res) => {
 app.post('/api/verify-checkout-session', async (req, res) => {
     try {
         const ordersInJson = await fs.readFileSync('./orders.json', "utf8")
-
         let existingOrders = [];
+
         if (ordersInJson.length) {
             existingOrders = JSON.parse(ordersInJson)
             const oldOrder = existingOrders.find(order => order.sessionId == req.body.sessionId)
             if (oldOrder) {
-                res.json({ isVerified: false })
+                res.json({ verified: false })
                 return;
             }
+
         }
 
         const session = await stripe.checkout.sessions.retrieve(req.body.sessionId)
         if (session.payment_status == "paid") {
-            const verifiedOrder = await stripe.checkout.sessions.listLineItems(session.sessionId)
-            verifiedOrder.sessionId = req.body.sessionId
+
+            const verifiedOrder = await stripe.checkout.sessions.listLineItems(session.id)
+            verifiedOrder.sessionId = req.body.id
             existingOrders.push(verifiedOrder)
-            await fs.writeFileSync('/orders.json', JSON.stringify(existingOrders, null, 2))
-            res.json({ isVerified: true })
+            await fs.writeFileSync('./orders.json', JSON.stringify(existingOrders, null, 2))
+
+            res.json({ verified: true })
+
         } else {
-            res.json({ isVerified: false })
+            res.json({ verified: false })
         }
     } catch (error) {
-        console.error(error)
-        res.json({ isVerified: false })
+        console.log(error)
+        res.json({ verified: false })
     }
+
 });
 
 app.get('/api/products', async (req, res) => {
