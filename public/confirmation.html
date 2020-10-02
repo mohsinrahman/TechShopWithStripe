@@ -1,14 +1,21 @@
-<html>
-  <head>
-      <title>Checkout session</title>
-      <script src="confirmation.js"></script>
-    </head>
-  <body>
-    <h1>Thanks for your order!</h1>
-    <p>
-      We appreciate your business!
-      If you have any questions, please email
-      <a href="mailto:orders@example.com">orders@techshop.com</a>.
-    </p>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="/script.js"></script>
+</head>
+
+<body onload="verifyCheckoutSession()"></body>
+<h1>Thanks for your order!</h1>
+<p>
+  We appreciate your business!
+  If you have any questions, please email
+  <a href="mailto:orders@example.com">orders@techshop.com</a>.
+</p>
+</body>
+
 </html>
