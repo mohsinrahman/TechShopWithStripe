@@ -21,6 +21,6 @@
     "express": "^4.17.1",
     "handy-storage": "^2.1.6",
     "nodemon": "^2.0.4",
-    "stripe": "^8.93.0"
+    "stripe": "^8.107.0"
   }
 }
