@@ -9,6 +9,7 @@ function main() {
 
 async function proceedToCheckout() {
   const cartTotal = JSON.parse(localStorage.getItem('cartItems'))
+  console.log(cartTotal);
   const showInCheckout = cartTotal.map((product) => {
     return {
       price_data: {
@@ -18,9 +19,10 @@ async function proceedToCheckout() {
         },
         unit_amount: product.price + "00"
       },
-      quantity: product.count,
+      quantity: product.count === undefined ? 1 : product.count,
     }
   })
+  console.log(showInCheckout);
   const response = await fetch("/api/checkout-session", {
     method: 'POST',
     body: JSON.stringify(showInCheckout),
@@ -29,7 +31,9 @@ async function proceedToCheckout() {
     }
   });
   const session = await response.json();
-  const result = await stripe.redirectToCheckout({ sessionId: session.id });
+  const result = await stripe.redirectToCheckout({
+    sessionId: session.id
+  });
 }
 
 
@@ -44,7 +48,9 @@ async function verifyCheckoutSession() {
         "Content-Type": "application/json"
       },
       method: 'POST',
-      body: JSON.stringify({ sessionId }),
+      body: JSON.stringify({
+        sessionId
+      }),
     })
     const session = await response.json()
   }
@@ -122,6 +128,7 @@ async function products() {
   }
 
   function addProductCart(cartArray) {
+    console.log(cartArray);
     localStorage.setItem("cartItems", JSON.stringify(cartArray))
     var itemCount = document.getElementById('itemCount');
     if (cartArray.length == 1) itemCount.style.opacity = 1
@@ -135,6 +142,7 @@ async function products() {
 
 function shopBasket() {
   var list = document.getElementById('cartList')
+  console.log(list);
   list.innerHTML = ''
   var table = document.createElement('table')
   table.id = 'shop-basket-table'
@@ -170,6 +178,7 @@ function shopBasket() {
 
 
 function addProduct(id) {
+  console.log(id);
   let cartItems = JSON.parse(localStorage.getItem('cartItems'))
   if (cartItems[id].count != undefined) {
     cartItems[id].count++
